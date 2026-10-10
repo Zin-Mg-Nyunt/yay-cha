@@ -8,6 +8,7 @@ import Home from "./Pages/Home";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Profile from "./Pages/Profile";
+import Show from "./Pages/Show";
 
 const AppContext = createContext();
 
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
         path: "/profile",
         element: <Profile />,
       },
+      {
+        path: "/show",
+        element: <Show />,
+      },
     ],
   },
 ]);
@@ -43,6 +48,7 @@ const router = createBrowserRouter([
 export default function Themed() {
   const [mode, setMode] = useState(localStorage.getItem("mode") || "dark");
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [openForm, setOpenForm] = useState(false);
 
   const theme = useMemo(() => {
     return createTheme({
@@ -58,12 +64,34 @@ export default function Themed() {
           fade: mode === "dark" ? grey[500] : grey[600],
         },
       },
+      components: {
+        MuiCssBaseline: {
+          styleOverrides: {
+            "html, body": {
+              scrollbarWidth: "none", // Firefox
+              msOverflowStyle: "none", // IE and Edge
+              "&::-webkit-scrollbar": {
+                display: "none", // Chrome, Safari, Edge
+              },
+            },
+          },
+        },
+      },
     });
   }, [mode]);
 
   return (
     <ThemeProvider theme={theme}>
-      <AppContext.Provider value={{ mode, setMode, openDrawer, setOpenDrawer }}>
+      <AppContext.Provider
+        value={{
+          mode,
+          setMode,
+          openDrawer,
+          setOpenDrawer,
+          openForm,
+          setOpenForm,
+        }}
+      >
         <RouterProvider router={router} />
         <CssBaseline />
       </AppContext.Provider>

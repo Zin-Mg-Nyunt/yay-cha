@@ -14,7 +14,11 @@ export default function NavBar() {
   const { mode, setMode, openDrawer, setOpenDrawer } = useApp();
   const navigate = useNavigate();
   return (
-    <AppBar position="static" color={mode === "dark" ? "default" : "primary"}>
+    <AppBar
+      position="fixed"
+      color={mode === "dark" ? "default" : "primary"}
+      sx={{ zIndex: 1000 }}
+    >
       <Toolbar sx={{ justifyContent: "space-between" }}>
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
           <IconButton

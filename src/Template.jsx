@@ -9,7 +9,7 @@ export default function Template() {
       <NavBar />
       <SideBar />
       <main>
-        <Container maxWidth="md">
+        <Container maxWidth="sm" sx={{ mt: 8 }}>
           <Outlet />
         </Container>
       </main>

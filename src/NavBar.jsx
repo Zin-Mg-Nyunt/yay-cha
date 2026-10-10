@@ -9,7 +9,7 @@ import {
 import { LightMode, DarkMode, Menu, Notifications } from "@mui/icons-material";
 import { useApp } from "./Themed";
 
-export default function NavBar() {
+export default function NavBar({ onLogin }) {
   const { mode, setMode, openDrawer, setOpenDrawer } = useApp();
   return (
     <AppBar position="static" color={mode === "dark" ? "default" : "primary"}>
@@ -28,7 +28,9 @@ export default function NavBar() {
           <Typography variant="h5">YayCha</Typography>
         </Box>
         <Box sx={{ display: "flex", gap: 1 }}>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit" onClick={onLogin}>
+            Login
+          </Button>
           <IconButton color="inherit" aria-label="menu">
             <Notifications />
           </IconButton>

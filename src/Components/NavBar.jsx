@@ -7,10 +7,12 @@ import {
   Box,
 } from "@mui/material";
 import { LightMode, DarkMode, Menu, Notifications } from "@mui/icons-material";
-import { useApp } from "./Themed";
+import { useApp } from "../Themed";
+import { useNavigate } from "react-router-dom";
 
-export default function NavBar({ onLogin }) {
+export default function NavBar() {
   const { mode, setMode, openDrawer, setOpenDrawer } = useApp();
+  const navigate = useNavigate();
   return (
     <AppBar position="static" color={mode === "dark" ? "default" : "primary"}>
       <Toolbar sx={{ justifyContent: "space-between" }}>
@@ -19,16 +21,14 @@ export default function NavBar({ onLogin }) {
             edge="start"
             color="inherit"
             aria-label="menu"
-            onClick={() => {
-              setOpenDrawer(true);
-            }}
+            onClick={() => setOpenDrawer(true)}
           >
             <Menu />
           </IconButton>
           <Typography variant="h5">YayCha</Typography>
         </Box>
         <Box sx={{ display: "flex", gap: 1 }}>
-          <Button color="inherit" onClick={onLogin}>
+          <Button color="inherit" onClick={() => navigate("/signin")}>
             Login
           </Button>
           <IconButton color="inherit" aria-label="menu">

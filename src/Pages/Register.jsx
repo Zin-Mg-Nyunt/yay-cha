@@ -9,10 +9,38 @@ import {
   Typography,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
-export default function Login({ onRegister }) {
+function PasswordField({ label, autoComplete }) {
   const [showPassword, setShowPassword] = useState(false);
 
+  return (
+    <TextField
+      label={label}
+      type={showPassword ? "text" : "password"}
+      fullWidth
+      autoComplete={autoComplete}
+      slotProps={{
+        input: {
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                onClick={() => setShowPassword((visible) => !visible)}
+                edge="end"
+              >
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        },
+      }}
+    />
+  );
+}
+
+export default function Register() {
+  const navigate = useNavigate();
   return (
     <Box
       component="form"
@@ -38,7 +66,9 @@ export default function Login({ onRegister }) {
           textAlign: "left",
         }}
       >
-        <Box sx={{ bgcolor: "banner", px: 3, pt: 4, pb: 3, textAlign: "center" }}>
+        <Box
+          sx={{ bgcolor: "banner", px: 3, pt: 4, pb: 3, textAlign: "center" }}
+        >
           <Avatar
             sx={{
               width: 72,
@@ -53,35 +83,25 @@ export default function Login({ onRegister }) {
           >
             Y
           </Avatar>
-          <Typography sx={{ fontSize: 22, fontWeight: 700 }}>YayCha</Typography>
+          <Typography sx={{ fontSize: 22, fontWeight: 700 }}>
+            Create account
+          </Typography>
           <Typography sx={{ color: "text.fade", mt: 0.5 }}>
-            Welcome back
+            Join YayCha
           </Typography>
         </Box>
 
         <Box sx={{ p: 3, display: "flex", flexDirection: "column", gap: 2 }}>
-          <TextField label="Email" type="email" fullWidth autoComplete="email" />
+          <TextField label="Name" fullWidth autoComplete="name" />
+          <TextField label="Username" fullWidth autoComplete="username" />
           <TextField
-            label="Password"
-            type={showPassword ? "text" : "password"}
+            label="Email"
+            type="email"
             fullWidth
-            autoComplete="current-password"
-            slotProps={{
-              input: {
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label={showPassword ? "Hide password" : "Show password"}
-                      onClick={() => setShowPassword((visible) => !visible)}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              },
-            }}
+            autoComplete="email"
           />
+          <PasswordField label="Password" autoComplete="new-password" />
+          <PasswordField label="Confirm password" autoComplete="new-password" />
           <Button
             type="submit"
             variant="contained"
@@ -89,12 +109,14 @@ export default function Login({ onRegister }) {
             fullWidth
             sx={{ mt: 1, py: 1.2, fontWeight: 600, textTransform: "none" }}
           >
-            Login
+            Register
           </Button>
-          <Typography sx={{ textAlign: "center", color: "text.fade", fontSize: 14 }}>
-            New to YayCha?{" "}
+          <Typography
+            sx={{ textAlign: "center", color: "text.fade", fontSize: 14 }}
+          >
+            Already have an account?{" "}
             <Button
-              onClick={onRegister}
+              onClick={() => navigate("/signin")}
               sx={{
                 p: 0,
                 minWidth: 0,
@@ -103,7 +125,7 @@ export default function Login({ onRegister }) {
                 verticalAlign: "baseline",
               }}
             >
-              Create an account
+              Login
             </Button>
           </Typography>
         </Box>

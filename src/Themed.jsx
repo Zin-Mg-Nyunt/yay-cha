@@ -1,14 +1,44 @@
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { createContext, useContext, useMemo, useState } from "react";
 import { CssBaseline } from "@mui/material";
-import App from "./App";
 import { deepPurple, grey } from "@mui/material/colors";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Template from "./Template";
+import Home from "./Pages/Home";
+import Login from "./Pages/Login";
+import Register from "./Pages/Register";
+import Profile from "./Pages/Profile";
 
 const AppContext = createContext();
 
 export function useApp() {
   return useContext(AppContext);
 }
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Template />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/signin",
+        element: <Login />,
+      },
+      {
+        path: "/signup",
+        element: <Register />,
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
+      },
+    ],
+  },
+]);
 
 export default function Themed() {
   const [mode, setMode] = useState(localStorage.getItem("mode") || "dark");
@@ -34,7 +64,7 @@ export default function Themed() {
   return (
     <ThemeProvider theme={theme}>
       <AppContext.Provider value={{ mode, setMode, openDrawer, setOpenDrawer }}>
-        <App />
+        <RouterProvider router={router} />
         <CssBaseline />
       </AppContext.Provider>
     </ThemeProvider>

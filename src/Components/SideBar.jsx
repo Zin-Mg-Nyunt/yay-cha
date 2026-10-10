@@ -9,11 +9,19 @@ import {
   Typography,
   Avatar,
 } from "@mui/material";
-import { Home, Person, Logout, Close as CloseIcon } from "@mui/icons-material";
-import { useApp } from "./Themed";
+import {
+  Home,
+  Person,
+  Logout,
+  Close as CloseIcon,
+  PersonAdd,
+} from "@mui/icons-material";
+import { useApp } from "../Themed";
+import { useNavigate } from "react-router-dom";
 
 export default function SideBar() {
   const { openDrawer, setOpenDrawer } = useApp();
+  const navigate = useNavigate();
   return (
     <Drawer
       anchor="left"
@@ -65,19 +73,41 @@ export default function SideBar() {
         </IconButton>
       </Box>
       <List>
-        <ListItem button sx={{ cursor: "pointer" }}>
+        <ListItem
+          button
+          sx={{ cursor: "pointer" }}
+          onClick={() => navigate("/")}
+        >
           <ListItemIcon>
             <Home />
           </ListItemIcon>
           <ListItemText primary="Home" />
         </ListItem>
-        <ListItem button sx={{ cursor: "pointer" }}>
+        <ListItem
+          button
+          sx={{ cursor: "pointer" }}
+          onClick={() => navigate("/profile")}
+        >
           <ListItemIcon>
             <Person />
           </ListItemIcon>
           <ListItemText primary="Profile" />
         </ListItem>
-        <ListItem button sx={{ cursor: "pointer" }}>
+        <ListItem
+          button
+          sx={{ cursor: "pointer" }}
+          onClick={() => navigate("/signup")}
+        >
+          <ListItemIcon>
+            <PersonAdd />
+          </ListItemIcon>
+          <ListItemText primary="Register" />
+        </ListItem>
+        <ListItem
+          button
+          sx={{ cursor: "pointer" }}
+          onClick={() => navigate("/logout")}
+        >
           <ListItemIcon>
             <Logout />
           </ListItemIcon>

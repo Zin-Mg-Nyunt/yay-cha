@@ -7,6 +7,8 @@ import {
   Tab,
   Tabs,
   Typography,
+  CircularProgress,
+  Alert,
 } from "@mui/material";
 import {
   CalendarMonth,
@@ -16,6 +18,9 @@ import {
   LocationOn,
   MoreVert,
 } from "@mui/icons-material";
+import { useParams } from "react-router-dom";
+import { fetchUser } from "../api";
+import { useState, useEffect } from "react";
 
 const stats = [
   { label: "Posts", value: 24 },
@@ -48,6 +53,29 @@ const posts = [
 ];
 
 export default function Profile() {
+  const { id } = useParams();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchUser(id)
+      .then((data) => {
+        setUser(data);
+      })
+      .catch((error) => {
+        setError(error.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [id]);
+
+  console.log(user);
+
+  if (loading) return <CircularProgress />;
+  if (error) return <Alert severity="error">{error}</Alert>;
+
   return (
     <Box sx={{ py: 3 }}>
       <Box
@@ -84,7 +112,7 @@ export default function Profile() {
                 fontWeight: 700,
               }}
             >
-              J
+              {user.name.charAt(0)}
             </Avatar>
             <Button
               variant="outlined"
@@ -96,14 +124,11 @@ export default function Profile() {
           </Box>
 
           <Typography sx={{ fontSize: 24, fontWeight: 700, mt: 1.5 }}>
-            John Doe
+            {user.name}
           </Typography>
-          <Typography sx={{ color: "text.fade" }}>@johndoe</Typography>
+          <Typography sx={{ color: "text.fade" }}>{user.username}</Typography>
 
-          <Typography sx={{ mt: 2 }}>
-            Tea lover, night owl, and part-time developer. Always up for a good
-            chat.
-          </Typography>
+          <Typography sx={{ mt: 2 }}>{user?.bio}</Typography>
 
           <Box
             sx={{
@@ -117,24 +142,24 @@ export default function Profile() {
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
               <LocationOn sx={{ fontSize: 18 }} />
-              Yangon, Myanmar
+              {user?.location}
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
               <CalendarMonth sx={{ fontSize: 18 }} />
-              Joined October 2026
+              Joined {user?.createdAt?.toLocaleDateString()}
             </Box>
           </Box>
 
-          <Box sx={{ display: "flex", gap: 4, mt: 2.5 }}>
+          {/* <Box sx={{ display: "flex", gap: 4, mt: 2.5 }}>
             {stats.map((stat) => (
               <Box key={stat.label} sx={{ display: "flex", gap: 0.75 }}>
-                <Typography sx={{ fontWeight: 700 }}>{stat.value}</Typography>
+                <Typography sx={{ fontWeight: 700 }}>{user[stat.label]}</Typography>
                 <Typography sx={{ color: "text.fade" }}>
                   {stat.label}
                 </Typography>
               </Box>
             ))}
-          </Box>
+          </Box> */}
         </Box>
 
         <Divider />
@@ -151,7 +176,7 @@ export default function Profile() {
         <Divider />
 
         {/* Posts */}
-        {posts.map((post, index) => (
+        {user.posts?.map((post, index) => (
           <Box key={post.id}>
             <Box sx={{ display: "flex", gap: 2, p: 3 }}>
               <Avatar
@@ -162,7 +187,7 @@ export default function Profile() {
                   bgcolor: "primary.main",
                 }}
               >
-                J
+                {post.author.name.charAt(0)}
               </Avatar>
               <Box sx={{ flex: 1, minWidth: 0 }}>
                 <Box
@@ -173,9 +198,12 @@ export default function Profile() {
                   }}
                 >
                   <Box sx={{ display: "flex", alignItems: "baseline", gap: 1 }}>
-                    <Typography sx={{ fontWeight: 600 }}>John Doe</Typography>
+                    <Typography sx={{ fontWeight: 600 }}>
+                      {post.author.name}
+                    </Typography>
                     <Typography sx={{ color: "text.fade", fontSize: 14 }}>
-                      @johndoe · {post.time}
+                      @{post.author.username} ·{" "}
+                      {post.createdAt?.toLocaleString()}
                     </Typography>
                   </Box>
                   <IconButton size="small" aria-label="more">
@@ -184,26 +212,41 @@ export default function Profile() {
                 </Box>
                 <Typography sx={{ mt: 0.5 }}>{post.body}</Typography>
                 <Box
-                  sx={{ display: "flex", gap: 3, mt: 1.5, color: "text.fade" }}
+                  sx={{
+                    display: "flex",
+                    gap: 3,
+                    mt: 1.5,
+                    color: "text.fade",
+                  }}
                 >
                   <Box
-                    sx={{ display: "flex", alignItems: "center", gap: 0.75 }}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 0.75,
+                    }}
                   >
                     <FavoriteBorder sx={{ fontSize: 18 }} />
-                    <Typography sx={{ fontSize: 14 }}>{post.likes}</Typography>
+                    <Typography sx={{ fontSize: 14 }}>
+                      {post?.likes?.length}
+                    </Typography>
                   </Box>
                   <Box
-                    sx={{ display: "flex", alignItems: "center", gap: 0.75 }}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 0.75,
+                    }}
                   >
                     <ChatBubbleOutlined sx={{ fontSize: 18 }} />
                     <Typography sx={{ fontSize: 14 }}>
-                      {post.comments}
+                      {post?.comments?.length}
                     </Typography>
                   </Box>
                 </Box>
               </Box>
             </Box>
-            {index < posts.length - 1 && <Divider />}
+            {index < user.posts?.length - 1 && <Divider />}
           </Box>
         ))}
       </Box>

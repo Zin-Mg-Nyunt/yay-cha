@@ -37,17 +37,17 @@ export default function Post({ post, showComments = false, addComment }) {
               width: 44,
               height: 44,
               color: "white",
-              bgcolor: colorFor(post.name),
+              bgcolor: colorFor(post.author.name),
             }}
           >
-            {post.name[0]}
+            {post.author.name[0]}
           </Avatar>
           <Box sx={{ flex: 1, minWidth: 0 }}>
             <Typography sx={{ fontWeight: 600, lineHeight: 1.3 }}>
-              {post.name}
+              {post.author.name}
             </Typography>
             <Typography sx={{ color: "text.fade", fontSize: 13 }}>
-              @{post.username} · {post.time}
+              @{post.author.username} · {post.time}
             </Typography>
           </Box>
           <IconButton size="small" aria-label="more">
@@ -64,7 +64,7 @@ export default function Post({ post, showComments = false, addComment }) {
             startIcon={<FavoriteBorder />}
             sx={{ color: "text.fade", textTransform: "none" }}
           >
-            {post.likes}
+            {post.likes?.length}
           </Button>
           <Button
             color="inherit"
@@ -72,7 +72,7 @@ export default function Post({ post, showComments = false, addComment }) {
             startIcon={<ChatBubbleOutlined />}
             sx={{ color: "text.fade", textTransform: "none" }}
           >
-            {post.comments.length}
+            {post.comments?.length}
           </Button>
           <Button
             color="inherit"
@@ -80,7 +80,7 @@ export default function Post({ post, showComments = false, addComment }) {
             startIcon={<ShareOutlined />}
             sx={{ color: "text.fade", textTransform: "none" }}
           >
-            {post.shares}
+            {post.shares?.length}
           </Button>
         </Box>
       </Box>
@@ -88,7 +88,7 @@ export default function Post({ post, showComments = false, addComment }) {
       {showComments && (
         <>
           <Divider />
-          <CommentList comments={post.comments} />
+          <CommentList comments={post.comments?.length} />
           <Divider />
           <AddComment onSubmit={addComment} />
         </>

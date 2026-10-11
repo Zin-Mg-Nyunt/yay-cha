@@ -2,30 +2,9 @@ import { useState } from "react";
 import { Avatar, Box, Button, IconButton, Typography } from "@mui/material";
 import AddPostForm from "../Components/AddPostForm";
 import { useApp } from "../Themed";
-import {
-  ChatBubbleOutlined,
-  FavoriteBorder,
-  Image as ImageIcon,
-  MoreVert,
-  ShareOutlined,
-} from "@mui/icons-material";
-import {
-  deepOrange,
-  deepPurple,
-  green,
-  indigo,
-  pink,
-  teal,
-} from "@mui/material/colors";
-
-const colors = [
-  deepPurple[500],
-  deepOrange[500],
-  teal[500],
-  pink[500],
-  indigo[500],
-  green[600],
-];
+import { Image as ImageIcon } from "@mui/icons-material";
+import Post from "../Components/Post";
+import colorFor from "../Components/colorFor";
 
 const initialPosts = [
   {
@@ -165,12 +144,6 @@ const initialPosts = [
   },
 ];
 
-function colorFor(name) {
-  let sum = 0;
-  for (const char of name) sum += char.charCodeAt(0);
-  return colors[sum % colors.length];
-}
-
 function Composer() {
   const { setOpenForm } = useApp();
 
@@ -188,7 +161,12 @@ function Composer() {
       }}
     >
       <Avatar
-        sx={{ width: 44, height: 44, color: "white", bgcolor: "primary.main" }}
+        sx={{
+          width: 44,
+          height: 44,
+          color: "white",
+          bgcolor: colorFor("John Doe"),
+        }}
       >
         J
       </Avatar>
@@ -217,75 +195,6 @@ function Composer() {
       >
         <ImageIcon />
       </IconButton>
-    </Box>
-  );
-}
-
-function Post({ post }) {
-  return (
-    <Box
-      sx={{
-        overflow: "hidden",
-        borderRadius: 3,
-        border: 1,
-        borderColor: "divider",
-        bgcolor: "background.paper",
-      }}
-    >
-      <Box sx={{ p: 2.5 }}>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-          <Avatar
-            sx={{
-              width: 44,
-              height: 44,
-              color: "white",
-              bgcolor: colorFor(post.name),
-            }}
-          >
-            {post.name[0]}
-          </Avatar>
-          <Box sx={{ flex: 1, minWidth: 0 }}>
-            <Typography sx={{ fontWeight: 600, lineHeight: 1.3 }}>
-              {post.name}
-            </Typography>
-            <Typography sx={{ color: "text.fade", fontSize: 13 }}>
-              @{post.username} · {post.time}
-            </Typography>
-          </Box>
-          <IconButton size="small" aria-label="more">
-            <MoreVert sx={{ fontSize: 20, color: "text.fade" }} />
-          </IconButton>
-        </Box>
-
-        <Typography sx={{ mt: 1.5 }}>{post.body}</Typography>
-
-        <Box sx={{ display: "flex", gap: 1, mt: 1.5, ml: -1 }}>
-          <Button
-            color="inherit"
-            size="small"
-            startIcon={<FavoriteBorder />}
-            sx={{ color: "text.fade", textTransform: "none" }}
-          >
-            {post.likes}
-          </Button>
-          <Button
-            color="inherit"
-            size="small"
-            startIcon={<ChatBubbleOutlined />}
-            sx={{ color: "text.fade", textTransform: "none" }}
-          >
-            {post.comments.length}
-          </Button>
-          <Button
-            color="inherit"
-            size="small"
-            startIcon={<ShareOutlined />}
-            sx={{ color: "text.fade", textTransform: "none" }}
-          >
-            {post.shares}
-          </Button>
-        </Box>
-      </Box>
     </Box>
   );
 }

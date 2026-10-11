@@ -17,7 +17,7 @@ import colorFor from "./colorFor";
 import CommentList from "./Comment";
 import AddComment from "./AddComment";
 
-export default function Post({ post, showComments = false, addComment }) {
+export default function Post({ post, showComments = false }) {
   const navigate = useNavigate();
   return (
     <Box
@@ -47,7 +47,7 @@ export default function Post({ post, showComments = false, addComment }) {
               {post.author.name}
             </Typography>
             <Typography sx={{ color: "text.fade", fontSize: 13 }}>
-              @{post.author.username} · {post.time}
+              @{post.author.username} · {post?.createdAt?.toLocaleString()}
             </Typography>
           </Box>
           <IconButton size="small" aria-label="more">
@@ -64,7 +64,7 @@ export default function Post({ post, showComments = false, addComment }) {
             startIcon={<FavoriteBorder />}
             sx={{ color: "text.fade", textTransform: "none" }}
           >
-            {post.likes?.length}
+            {post?.likes?.length}
           </Button>
           <Button
             color="inherit"
@@ -72,7 +72,7 @@ export default function Post({ post, showComments = false, addComment }) {
             startIcon={<ChatBubbleOutlined />}
             sx={{ color: "text.fade", textTransform: "none" }}
           >
-            {post.comments?.length}
+            {post?.comments?.length}
           </Button>
           <Button
             color="inherit"
@@ -80,7 +80,7 @@ export default function Post({ post, showComments = false, addComment }) {
             startIcon={<ShareOutlined />}
             sx={{ color: "text.fade", textTransform: "none" }}
           >
-            {post.shares?.length}
+            {post?.shares?.length}
           </Button>
         </Box>
       </Box>
@@ -88,9 +88,9 @@ export default function Post({ post, showComments = false, addComment }) {
       {showComments && (
         <>
           <Divider />
-          <CommentList comments={post.comments?.length} />
+          <CommentList comments={post?.comments} />
           <Divider />
-          <AddComment onSubmit={addComment} />
+          <AddComment />
         </>
       )}
     </Box>

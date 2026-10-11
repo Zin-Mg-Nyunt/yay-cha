@@ -10,10 +10,10 @@ function Comment({ comment }) {
           height: 36,
           fontSize: 15,
           color: "white",
-          bgcolor: colorFor(comment.name),
+          bgcolor: colorFor(comment.author.name),
         }}
       >
-        {comment.name[0]}
+        {comment.author.name[0]}
       </Avatar>
       <Box sx={{ minWidth: 0 }}>
         <Box
@@ -26,13 +26,13 @@ function Comment({ comment }) {
           }}
         >
           <Typography sx={{ fontSize: 14, fontWeight: 600 }}>
-            {comment.name}
+            {comment.author.name}
           </Typography>
-          <Typography sx={{ fontSize: 15 }}>{comment.text}</Typography>
+          <Typography sx={{ fontSize: 15 }}>{comment.body}</Typography>
         </Box>
         <Box sx={{ display: "flex", gap: 2, mt: 0.25, ml: 1.5 }}>
           <Typography sx={{ color: "text.fade", fontSize: 12 }}>
-            {comment.time}
+            {comment.createdAt?.toLocaleString()}
           </Typography>
           <Typography
             sx={{
@@ -60,7 +60,7 @@ function Comment({ comment }) {
   );
 }
 
-export default function CommentList({ comments }) {
+export default function CommentList({ comments = [] }) {
   return (
     <Box
       sx={{

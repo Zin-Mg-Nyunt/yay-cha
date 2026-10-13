@@ -3,7 +3,7 @@ const api = "http://localhost:8000";
 export async function fetchPosts() {
   const response = await fetch(`${api}/posts`);
   if (!response.ok) {
-    throw new Error("Failed to fetch posts");
+    throw new Error(response.statusText);
   }
   return await response.json();
 }
@@ -11,7 +11,7 @@ export async function fetchPosts() {
 export async function fetchPost(id) {
   const response = await fetch(`${api}/posts/${id}`);
   if (!response.ok) {
-    throw new Error("Failed to fetch post");
+    throw new Error(response.statusText);
   }
   return await response.json();
 }
@@ -25,13 +25,13 @@ export async function createPost(post) {
     body: JSON.stringify(post),
   });
   if (!response.ok) {
-    throw new Error("Failed to create new post");
+    throw new Error(response.statusText);
   }
   return await response.json();
 }
 
 export async function updatePost(id, post) {
-  const response = await fetch(`${api}/posts/${id}`, {
+  const response = await fetch(`${api}/posts/update/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -39,17 +39,17 @@ export async function updatePost(id, post) {
     body: JSON.stringify(post),
   });
   if (!response.ok) {
-    throw new Error("Failed to update existing post");
+    throw new Error(response.statusText);
   }
   return await response.json();
 }
 
 export async function deletePost(id) {
-  const response = await fetch(`${api}/posts/${id}`, {
+  const response = await fetch(`${api}/posts/delete/${id}`, {
     method: "DELETE",
   });
   if (!response.ok) {
-    throw new Error("Failed to delete existing post");
+    throw new Error(response.statusText);
   }
   return await response.json();
 }

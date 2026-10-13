@@ -9,12 +9,15 @@ import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Profile from "./Pages/Profile";
 import Show from "./Pages/Show";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const AppContext = createContext();
 
 export function useApp() {
   return useContext(AppContext);
 }
+
+export const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -92,7 +95,9 @@ export default function Themed() {
           setOpenForm,
         }}
       >
-        <RouterProvider router={router} />
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
         <CssBaseline />
       </AppContext.Provider>
     </ThemeProvider>
